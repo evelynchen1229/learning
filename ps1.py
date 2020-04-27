@@ -25,7 +25,6 @@ while current_saving < deposit:
 
 print (month)
 print(current_saving)
-#month = 12,
 
 
 
