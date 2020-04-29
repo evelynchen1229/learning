@@ -60,6 +60,9 @@
 #
 ##part c: finding the right amount to save away bisection search
 
+# need to add error handle for infinite loop
+# need to debug the steps; correct saving_portion, but wrong steps
+
 def comparison(saving_portion): # return the different between deposit - current_saving
 #get current saving in 3 years
   month = 0
@@ -90,7 +93,7 @@ def saving_rate(saving_per = 5000, step=1,high=10000,low=0):
 
   if compare_point >= 0 and compare_point <= 100:
     result = int(saving_per)
-    return {"saving portionl": result, "steps": step}
+    return {"saving portion": result, "steps": step}
 
   if compare_point > 10:
     new_high = saving_per
