@@ -60,56 +60,57 @@
 #
 ##part c: finding the right amount to save away bisection search
 
-# need to add error handle for infinite loop
 # need to debug the steps; correct saving_portion, but wrong steps
+try:
+  def comparison(saving_portion): # return the different between deposit - current_saving
+  #get current saving in 3 years
+    month = 0
+    deposit = 1000000*.25
+    monthly_salary = 1500/12
+    current_saving = 0
+    while current_saving < deposit:
+      if month % 6 == 0 and month >0:
+          monthly_salary = monthly_salary* (1 + .07)
+      current_saving = current_saving * (1 + .04/12) + monthly_salary * (int(saving_portion))/10000
+      month += 1
+    #    print(month)
+     #   print(monthly_salary)
+      if month > 35:
+        break
+    diff = int(current_saving - deposit)
+  #  print(diff)
+   # print(current_saving)
+    #print(month)
+    #print(saving_portion)
 
-def comparison(saving_portion): # return the different between deposit - current_saving
-#get current saving in 3 years
-  month = 0
-  deposit = 1000000*.25
-  monthly_salary = 150000/12
-  current_saving = 0
-  while current_saving < deposit:
-    if month % 6 == 0 and month >0:
-        monthly_salary = monthly_salary* (1 + .07)
-    current_saving = current_saving * (1 + .04/12) + monthly_salary * (int(saving_portion))/10000
-    month += 1
-  #    print(month)
-   #   print(monthly_salary)
-    if month > 35:
-      break
-  diff = int(current_saving - deposit)
-#  print(diff)
- # print(current_saving)
-  #print(month)
-  #print(saving_portion)
-
-  return diff
+    return diff
 
 
-def saving_rate(saving_per = 5000, step=1,high=10000,low=0):
-  compare_point = comparison(saving_per)
-#  print('compare_point', compare_point)
+  def saving_rate(saving_per = 5000, step=1,high=10000,low=0):
+    compare_point = comparison(saving_per)
+  #  print('compare_point', compare_point)
 
-  if compare_point >= 0 and compare_point <= 100:
-    result = int(saving_per)
-    return {"saving portion": result, "steps": step}
+    if compare_point >= 0 and compare_point <= 100:
+      result = int(saving_per)
+      return {"saving portion": result, "steps": step}
 
-  if compare_point > 10:
-    new_high = saving_per
+    if compare_point > 10:
+      new_high = saving_per
+      new_saving_per = (low + high) / 2
+
+      return saving_rate(new_saving_per, step + 1, new_high, low)
+
+    new_low = saving_per
     new_saving_per = (low + high) / 2
 
-    return saving_rate(new_saving_per, step + 1, new_high, low)
-
-  new_low = saving_per
-  new_saving_per = (low + high) / 2
-
-  return saving_rate(new_saving_per, step + 1, high, new_low)
+    return saving_rate(new_saving_per, step + 1, high, new_low)
 
 
-a = saving_rate()
-print(a)
+  a = saving_rate()
+  print(a)
 
+except RecursionError:
+  print("There's no way you can get a $1m house with your salary man.")
 #the codes below returns "None" because of parameter names being mutated for the new values
 # should assign new variable names if the diffult value has changed
 
