@@ -60,13 +60,14 @@
 #
 ##part c: finding the right amount to save away bisection search
 
-# need to debug the steps; correct saving_portion, but wrong steps
 try:
+  print("let's see whether you can get a $1m house in three years\n")
+  annual_salary = int(input("how much do you earn per year? "))
   def comparison(saving_portion): # return the different between deposit - current_saving
   #get current saving in 3 years
     month = 0
     deposit = 1000000*.25
-    monthly_salary = 1500/12
+    monthly_salary =annual_salary/12
     current_saving = 0
     while current_saving < deposit:
       if month % 6 == 0 and month >0:
@@ -79,9 +80,10 @@ try:
         break
     diff = int(current_saving - deposit)
   #  print(diff)
-   # print(current_saving)
+    #print(current_saving)
     #print(month)
     #print(saving_portion)
+   # print(diff)
 
     return diff
 
@@ -91,17 +93,21 @@ try:
   #  print('compare_point', compare_point)
 
     if compare_point >= 0 and compare_point <= 100:
-      result = int(saving_per)
-      return {"saving portion": result, "steps": step}
+      result = str(int(saving_per)/100) + "%"
+      #return {"monthly saving portion": result, "steps": step}
+      print("\nYes you can as long as you have monthly saving portion shown below\n")
+
+      return result
 
     if compare_point > 10:
       new_high = saving_per
-      new_saving_per = (low + high) / 2
+      new_saving_per = (low + new_high) / 2
+      #forgot to use "new_high", same with "new_low" below - results in duplicating calculation steps;
 
       return saving_rate(new_saving_per, step + 1, new_high, low)
 
     new_low = saving_per
-    new_saving_per = (low + high) / 2
+    new_saving_per = (new_low + high) / 2
 
     return saving_rate(new_saving_per, step + 1, high, new_low)
 
@@ -109,8 +115,11 @@ try:
   a = saving_rate()
   print(a)
 
-except RecursionError:
-  print("There's no way you can get a $1m house with your salary man.")
+except RecursionError :
+  if  annual_salary < 1000000:
+    print("\nThere's no way you can get a $1m house with your salary man.")
+  else:
+    print("\nMan, not even joking, less than a year mate!!!!")
 #the codes below returns "None" because of parameter names being mutated for the new values
 # should assign new variable names if the diffult value has changed
 
