@@ -102,11 +102,11 @@ def get_guessed_word(secret_word, letters_guessed):
     result ="".join(guessed_letters)
     print("'",result,"'")
     return result
-
-guessing_word = input("guess a word please: ").lower()
-#assert guessing_word.islower(), 'please put lower case word'
-guessed_word = list(guessing_word)
-guessing_word = get_guessed_word('apple',guessed_word)
+    pass
+#guessing_word = input("guess a word please: ").lower()
+##assert guessing_word.islower(), 'please put lower case word'
+#guessed_word = list(guessing_word)
+#guessing_word = get_guessed_word('apple',guessed_word)
 
 
 
@@ -118,8 +118,23 @@ def get_available_letters(letters_guessed):
       yet been guessed.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    full_lowercase_list = list(string.ascii_lowercase)
+    all_available_letters = []
+    for i in full_lowercase_list:
+        if i in letters_guessed:
+            pass
+        else:
+            all_available_letters.append(i)
 
+    result = "".join(all_available_letters)
+    print(result)
+    return result
+
+guessing_word = input("guess a word please: ").lower()
+#assert guessing_word.islower(), 'please put lower case word'
+guessed_available = list(guessing_word)
+
+available_letters = get_available_letters(guessed_available)
 
 
 def hangman(secret_word):
