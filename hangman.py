@@ -41,6 +41,7 @@ def choose_word(wordlist):
     Returns a word from wordlist at random
     """
     return random.choice(wordlist)
+    pass
 
 # end of helper code
 
@@ -61,7 +62,9 @@ def is_word_guessed(secret_word, letters_guessed):
       False otherwise
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    secret_letters = secret_word.split()
+    #secret_letters = secret_word.split()
+    #returns ['apple']
+    secret_letters = list(secret_word)
     guessed = 0
     for i in secret_letters:
         if i in letters_guessed:
@@ -71,11 +74,13 @@ def is_word_guessed(secret_word, letters_guessed):
     print(guessed == len(secret_letters))
     return letters_guessed
 
-guessing_word = input("guess a word please: ").lower()
-#assert guessing_word.islower(), 'please put lower case word'
+    pass
 
-guessed = guessing_word.split()
-guessing = is_word_guessed('apple',guessed)
+#guessing_word = input("guess a word please: ").lower()
+##assert guessing_word.islower(), 'please put lower case word'
+#
+#is_guessed = list(guessing_word)
+#is_guessing = is_word_guessed('apple',is_guessed)
 
 
 def get_guessed_word(secret_word, letters_guessed):
@@ -86,7 +91,23 @@ def get_guessed_word(secret_word, letters_guessed):
       which letters in secret_word have been guessed so far.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    secret_letters = list(secret_word)
+    print(secret_letters)
+    guessed_letters = []
+    for i in secret_letters:
+        if i in letters_guessed:
+            guessed_letters.append(i)
+        else:
+            guessed_letters.append('_ ')
+    result ="".join(guessed_letters)
+    print("'",result,"'")
+    return result
+
+guessing_word = input("guess a word please: ").lower()
+#assert guessing_word.islower(), 'please put lower case word'
+guessed_word = list(guessing_word)
+guessing_word = get_guessed_word('apple',guessed_word)
+
 
 
 
