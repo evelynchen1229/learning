@@ -92,7 +92,7 @@ def get_guessed_word(secret_word, letters_guessed=''):
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
     secret_letters = list(secret_word)
-    print(secret_letters)
+    #print(secret_letters)
     guessed_letters = []
     if len(letters_guessed) >0:
         for i in secret_letters:
@@ -135,7 +135,7 @@ def get_available_letters(letters_guessed=''):
         result = "".join(all_available_letters)
     else:
         result = full_letters
-    print(result)
+    #print(result)
     return result
 
 #guessing_word = input("guess a word please: ").lower()
@@ -170,6 +170,12 @@ def hangman(secret_word):
 
     Follows the other limitations detailed in the problem write-up.
     '''
+    #Bugs to be sloved
+    '''
+    1. dynamic available letters (not including the guessed ones atm) # done
+    2.dynamic word_now (one letter being shown only atm) # done
+    3.
+    '''
     secrect_len = len(secret_word)
     warnings = 3
     guessing_round = 6
@@ -181,18 +187,24 @@ def hangman(secret_word):
     ------------------------'''.format(secrect_len,warnings)
     )
     guessed_list = []
-    while guessing_round >0:
-        remaining_guessing = guessing_round - deducting
-        available_letters = get_available_letters()
+    correct_guess_list = []
+    all_available_letters = string.ascii_lowercase
 
-        print('''
-        You have {0} guesses left.
-        Available letters: {1}
-        '''.format(remaining_guessing,available_letters)
-        )
+    print('''
+    You have {0} guesses left.
+    Available letters: {1}
+    '''.format(guessing_round,all_available_letters)
+    )
+    word_now =''
+    while guessing_round >0 :
+        if word_now == secret_word:
+            break
+
         letter_guessed = input("Please guess a letter: ")
 
+
         if letter_guessed.isalpha():
+
             if letter_guessed in guessed_list:
                 if warnings == 0:
                     guessing_round -= 1
@@ -204,11 +216,23 @@ def hangman(secret_word):
                         guessing_round)
             elif letter_guessed in secret_word :
                 guessed_list.append(letter_guessed)
-                word_now = get_guessed_word(secret_word, letter_guessed)
+                already_guessed = ''.join(guessed_list)
+                available_letters = get_available_letters(already_guessed)
+
+                correct_guess_list.append(letter_guessed)
+                correct_guess=''.join(correct_guess_list)
+                word_now = get_guessed_word(secret_word, correct_guess)
                 print("good guess. the current word is: ",word_now, " remaining guessing",
                         guessing_round)
+            elif letter_guessed not in secret_word :
+                guessed_list.append(letter_guessed)
+                already_guessed = ''.join(guessed_list)
+                available_letters = get_available_letters(already_guessed)
+                word_now = get_guessed_word(secret_word, correct_guess)
+                guessing_round -=1
+                print("Sorry, wrong guess. the current word is: ",word_now, " remaining guessing",
+                        guessing_round)
 
-                new_available_letters = get_available_letters()
 
 
                 #if in the secret word
@@ -225,6 +249,12 @@ def hangman(secret_word):
             warnings -= 1
             print('Oops! That is not a valid letter. You have ',warnings,' warnings left')
             print('Remaining guessing rounds: ',guessing_round)
+
+        print('''
+        You have {0} guesses left.
+        Available letters: {1}
+        '''.format(guessing_round,available_letters)
+        )
     if word_now == secret_word:
         print("you win")
         return word_now
