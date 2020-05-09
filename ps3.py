@@ -92,7 +92,30 @@ def get_word_score(word, n):
     returns: int >= 0
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    #pass  # TO DO... Remove this line when you implement this function
+    """prepare scrabble word list - .keys()
+    scrabble word score list - .values()
+    """
+    scrabble_word =[]
+    for w in SCRABBLE_LETTER_VALUES.keys():
+        scrabble_word.append(w)
+    scrabble_score =[]
+    for s in SCRABBLE_LETTER_VALUES.values():
+        scrabble_score.append(s)
+    first_part = 0
+    for i in word:
+        position = scrabble_word.index(i)
+        score = scrabble_score[position]
+        first_part += score
+    print("first_part score: ",first_part)
+
+    second_part = max(7 * len(word)-3 * (n-len(word)),1)
+    print(second_part)
+    word_score = first_part + second_part
+    print("total word_score: ",word_score)
+    return 0
+
+test= get_word_score('at',7)
 
 #
 # Make sure you understand how this function works and what it does!
