@@ -445,7 +445,7 @@ def hangman_with_hints(secret_word):
         print("Congratulations, you won!\nYour total score for this game is: {}".format(score))
         return word_now
     else:
-        print("Sorry, you ran out of guesses. The word was else")
+       print("Sorry, you ran out of guesses. The word was else: ",secret_word)
         return word_now
     #pass
 
