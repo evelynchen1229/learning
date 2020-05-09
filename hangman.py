@@ -12,7 +12,7 @@
 import random
 import string
 
-WORDLIST_FILENAME = "words.txt"
+WORDLIST_FILENAME = "words_hangman.txt"
 
 
 def load_words():
@@ -446,7 +446,7 @@ def hangman_with_hints(secret_word):
         return word_now
     else:
        print("Sorry, you ran out of guesses. The word was else: ",secret_word)
-        return word_now
+       return word_now
     #pass
 
 secret_word = choose_word(wordlist)
