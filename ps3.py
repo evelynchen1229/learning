@@ -96,16 +96,18 @@ def get_word_score(word, n):
     """prepare scrabble word list - .keys()
     scrabble word score list - .values()
     """
-    scrabble_word =[]
-    for w in SCRABBLE_LETTER_VALUES.keys():
-        scrabble_word.append(w)
-    scrabble_score =[]
-    for s in SCRABBLE_LETTER_VALUES.values():
-        scrabble_score.append(s)
+   # scrabble_word =[]
+   # for w in SCRABBLE_LETTER_VALUES.keys():
+   #     scrabble_word.append(w)
+   # scrabble_score =[]
+   # for s in SCRABBLE_LETTER_VALUES.values():
+   #     scrabble_score.append(s)
     first_part = 0
     for i in word:
-        position = scrabble_word.index(i)
-        score = scrabble_score[position]
+   #     position = scrabble_word.index(i)
+   #     score = scrabble_score[position]
+        score=SCRABBLE_LETTER_VALUES[i]
+
         first_part += score
     print("first_part score: ",first_part)
 
@@ -115,7 +117,7 @@ def get_word_score(word, n):
     print("total word_score: ",word_score)
     return 0
 
-test= get_word_score('at',7)
+test= get_word_score('apple',7)
 
 #
 # Make sure you understand how this function works and what it does!
