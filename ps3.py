@@ -16,8 +16,7 @@ CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
-    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
-}
+    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10,'*':0}
 
 # -----------------------------------
 # Helper code
@@ -103,21 +102,25 @@ def get_word_score(word, n):
    # for s in SCRABBLE_LETTER_VALUES.values():
    #     scrabble_score.append(s)
     first_part = 0
-    for i in word:
+    for i in word.lower():
+
    #     position = scrabble_word.index(i)
    #     score = scrabble_score[position]
         score=SCRABBLE_LETTER_VALUES[i]
 
         first_part += score
-    print("first_part score: ",first_part)
+#    print("first_part score: ",first_part)
 
     second_part = max(7 * len(word)-3 * (n-len(word)),1)
-    print(second_part)
-    word_score = first_part + second_part
-    print("total word_score: ",word_score)
-    return 0
+ #   print(second_part)
+    if word=="":
+       word_score=0
+    else:
+       word_score = first_part * second_part
+  #  print("total word_score: ",word_score)
+    return word_score
 
-test= get_word_score('apple',7)
+#test= get_word_score('apple',7)
 
 #
 # Make sure you understand how this function works and what it does!
@@ -193,7 +196,30 @@ def update_hand(hand, word):
     returns: dictionary (string -> int)
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    #pass  # TO DO... Remove this line when you implement this function
+    new_hand = hand.copy()
+    for i in word.lower():
+       if i in new_hand.keys():
+          new_hand[i] -=1
+          if new_hand[i]==0:
+             new_hand.pop(i)
+          else:
+             pass
+       else:
+          pass
+
+
+    print(new_hand)
+
+
+    for n in new_hand.keys():
+       for j in range(new_hand[n]):
+          print(n, end=' ')
+    print()
+    return new_hand
+
+
+
 
 #
 # Problem #3: Test word validity
@@ -210,7 +236,44 @@ def is_valid_word(word, hand, word_list):
     returns: boolean
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    #pass  # TO DO... Remove this line when you implement this function
+    word_list=load_words()
+    word=word.lower()
+    word_fre=get_frequency_dict(word)
+#    print(word_fre)
+    in_hand=1
+    in_list=1
+
+    for i in word:
+       if i in hand.keys() and word_fre.get(i,0)<= hand.get(i,0):
+          in_hand *= 1
+       else:
+          in_hand *= 0
+          return False
+    if in_hand==1:
+       if "*" not in word and  word in word_list:
+          return True
+       elif "*" in word:
+          possible_word=[]
+          position=word.index("*")
+          for w in word_list:
+             if len(w)==len(word) and w[position] in VOWELS and word.replace("*","")==w.replace(w[position],""):
+                possible_word.append(w)
+          if len(possible_word)>0:
+             return True
+       else:
+          return False
+
+#word_list=load_words()
+#hand={'h':1,'e':1,'l':2,'o':1}
+#word='hello'
+#test=is_valid_word(word, hand, word_list)
+#print(test)
+
+
+
+
+
 
 #
 # Problem #5: Playing a hand
