@@ -287,19 +287,27 @@ def calculate_handlen(hand):
     returns: integer
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    #pass  # TO DO... Remove this line when you implement this function
+    length = int(len(hand))
+    return length
 
 def play_hand(hand, word_list):
 
     """
     Allows the user to play the given hand, as follows:
 
+    #call initial_hand = deal_hand(n), input (n)
+    # call word_list = load_words()
+
     * The hand is displayed.
+    #call display(initial_hand)
 
     * The user may input a word.
+    # input a word
 
     * When any word is entered (valid or invalid), it uses up letters
       from the hand.
+    # call is_valid_word(initial_hand, word, word_list)
 
     * An invalid word is rejected, and a message is displayed asking
       the user to choose another word.
@@ -307,8 +315,13 @@ def play_hand(hand, word_list):
     * After every valid word: the score for that word is displayed,
       the remaining letters in the hand are displayed, and the user
       is asked to input another word.
+     # if valid: call scrabble_word()
+     # if valid: call update_hand()
+     # if valid: call calculated_handlen (current_hand)--> dynamic
+     len >0 continue the game
 
     * The sum of the word scores is displayed when the hand finishes.
+    # cumulate scores --> for /while loop for rounds of hand
 
     * The hand finishes when there are no more unused letters.
       The user can also finish playing the hand by inputing two
