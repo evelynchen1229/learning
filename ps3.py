@@ -33,14 +33,14 @@ def load_words():
     take a while to finish.
     """
 
-    print("Loading word list from file...")
+#    print("Loading word list from file...")
     # inFile: file
     inFile = open(WORDLIST_FILENAME, 'r')
     # wordlist: list of strings
     wordlist = []
     for line in inFile:
         wordlist.append(line.strip().lower())
-    print("  ", len(wordlist), "words loaded.")
+#    print("  ", len(wordlist), "words loaded.")
     return wordlist
 
 def get_frequency_dict(sequence):
@@ -121,7 +121,12 @@ def get_word_score(word, n):
   #  print("total word_score: ",word_score)
     return word_score
 
-#test= get_word_score('apple',7)
+#test= get_word_score('max',7)
+#print(test)
+#test2=get_word_score('zo*',7)
+#print(test2)
+#test3=get_word_score('b*y',7)
+#print(test3)
 
 #
 # Make sure you understand how this function works and what it does!
@@ -143,7 +148,7 @@ def display_hand(hand):
         for j in range(hand[letter]):
              print(letter, end=' ')      # print all on the same line
     print()                              # print an empty line
-
+    return 0
 #
 # Make sure you understand how this function works and what it does!
 # You will need to modify this for Problem #4.
@@ -210,7 +215,7 @@ def update_hand(hand, word):
           pass
 
 
-    print(new_hand)
+    #print(new_hand)
 
 
     for n in new_hand.keys():
@@ -292,46 +297,91 @@ def calculate_handlen(hand):
     return length
 
 def play_hand(hand, word_list):
+  hand_length = calculate_handlen(hand)
+  current_score = 0
+  while hand_length > 0:
+    user_word = input("Please make a word or enter '!!' to end the game: ").lower()
+    print()
+    if user_word != "!!":
+      validity = is_valid_word(user_word,initial_hand,initial_word_list)
+      if validity == True:
+        score = get_word_score(user_word,hand_size)
+        print(user_word," ",score)
+        current_score += score
+        current_hand = update_hand(hand,user_word)
+        hand_length = calculate_handlen(current_hand)
+        hand = current_hand
+        print("current score: ",current_score)
+      else:
+        print("choose another word")
+        print(current_score)
+        current_hand = update_hand(hand,user_word)
+        hand_length = calculate_handlen(current_hand)
+        hand = current_hand
+    else:
+      break
+  print("End of this game round")
+  print(current_score)
+  return current_score
 
-    """
-    Allows the user to play the given hand, as follows:
+rounds = int(input("how many rounds do you want to play? "))
+print()
+n = 1
+total_score = 0
+while n <= rounds:
+  hand_size = int(input("how many letters would you like in a hand? "))
+  print()
+  initial_hand = deal_hand(hand_size)
+  initial_word_list = load_words()
+  display_hand(initial_hand)
 
-    #call initial_hand = deal_hand(n), input (n)
-    # call word_list = load_words()
+  game_score = play_hand(initial_hand,initial_word_list)
+  total_score += game_score
+  n += 1
 
-    * The hand is displayed.
-    #call display(initial_hand)
+print("Total score: ",total_score)
 
-    * The user may input a word.
-    # input a word
 
-    * When any word is entered (valid or invalid), it uses up letters
-      from the hand.
-    # call is_valid_word(initial_hand, word, word_list)
 
-    * An invalid word is rejected, and a message is displayed asking
-      the user to choose another word.
+   # """
+   # Allows the user to play the given hand, as follows:
 
-    * After every valid word: the score for that word is displayed,
-      the remaining letters in the hand are displayed, and the user
-      is asked to input another word.
-     # if valid: call scrabble_word()
-     # if valid: call update_hand()
-     # if valid: call calculated_handlen (current_hand)--> dynamic
-     len >0 continue the game
+   # #call initial_hand = deal_hand(n), input (n)
+   # # call word_list = load_words()
 
-    * The sum of the word scores is displayed when the hand finishes.
-    # cumulate scores --> for /while loop for rounds of hand
+   # * The hand is displayed.
+   # #call display(initial_hand)
 
-    * The hand finishes when there are no more unused letters.
-      The user can also finish playing the hand by inputing two
-      exclamation points (the string '!!') instead of a word.
+   # * The user may input a word.
+   # # input a word
 
-      hand: dictionary (string -> int)
-      word_list: list of lowercase strings
-      returns: the total score for the hand
+   # * When any word is entered (valid or invalid), it uses up letters
+   #   from the hand.
+   # # call is_valid_word(initial_hand, word, word_list)
 
-    """
+   # * An invalid word is rejected, and a message is displayed asking
+   #   the user to choose another word.
+
+   # * After every valid word: the score for that word is displayed,
+   #   the remaining letters in the hand are displayed, and the user
+   #   is asked to input another word.
+   #  # if valid: call scrabble_word()
+   #  # if valid: call update_hand()
+   #  # if valid: call calculated_handlen (current_hand)--> dynamic
+   #  len >0 continue the game
+
+   # * The sum of the word scores is displayed when the hand finishes.
+   # # cumulate scores --> for /while loop for rounds of hand
+
+   # * The hand finishes when there are no more unused letters.
+   #   The user can also finish playing the hand by inputing two
+   #   exclamation points (the string '!!') instead of a word.
+
+   #   hand: dictionary (string -> int)
+   #   word_list: list of lowercase strings
+   #   returns: the total score for the hand
+
+   # """
 
     # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
     # Keep track of the total score
@@ -433,7 +483,7 @@ def play_game(word_list):
     word_list: list of lowercase strings
     """
 
-    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
+#    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
 
 
 
