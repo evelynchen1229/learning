@@ -296,22 +296,22 @@ def calculate_handlen(hand):
     length = int(len(hand))
     return length
 
-def play_hand(hand, word_list):
+def play_hand(hand, word_list,n):
   hand_length = calculate_handlen(hand)
   current_score = 0
   while hand_length > 0:
     user_word = input("Please make a word or enter '!!' to end the game: ").lower()
     print()
     if user_word != "!!":
-      validity = is_valid_word(user_word,initial_hand,initial_word_list)
+      validity = is_valid_word(user_word,hand,word_list)
       if validity == True:
-        score = get_word_score(user_word,hand_size)
-        print(user_word," ",score)
+        score = get_word_score(user_word,n)
+        print('"',user_word,'"'," earned",score," points")
         current_score += score
         current_hand = update_hand(hand,user_word)
         hand_length = calculate_handlen(current_hand)
         hand = current_hand
-        print("current score: ",current_score)
+        print("current total score: ",current_score)
       else:
         print("choose another word")
         print(current_score)
@@ -324,22 +324,7 @@ def play_hand(hand, word_list):
   print(current_score)
   return current_score
 
-rounds = int(input("how many rounds do you want to play? "))
-print()
-n = 1
-total_score = 0
-while n <= rounds:
-  hand_size = int(input("how many letters would you like in a hand? "))
-  print()
-  initial_hand = deal_hand(hand_size)
-  initial_word_list = load_words()
-  display_hand(initial_hand)
 
-  game_score = play_hand(initial_hand,initial_word_list)
-  total_score += game_score
-  n += 1
-
-print("Total score: ",total_score)
 
 
 
@@ -421,11 +406,6 @@ print("Total score: ",total_score)
 # Problem #6: Playing a game
 #
 
-
-#
-# procedure you will use to substitute a letter in a hand
-#
-
 def substitute_hand(hand, letter):
     """
     Allow the user to replace all copies of one letter in the hand (chosen by user)
@@ -449,7 +429,20 @@ def substitute_hand(hand, letter):
     returns: dictionary (string -> int)
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+   # pass  # TO DO... Remove this line when you implement this function
+    choice_letter = VOWELS_blank + CONSONANTS
+    substitute =random.choice(choice_letter)
+    if hand[letter] > 1:
+      hand[letter] -= 1
+    else:
+      hand.pop(letter)
+    hand[substitute]=hand.get(substitute,0)+1
+    return hand
+
+
+#
+# procedure you will use to substitute a letter in a hand
+#
 
 
 def play_game(word_list):
@@ -482,11 +475,69 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
+#    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
+    rounds = int(input("Enter total number of hands: "))
+    n = 1
+    total_score = 0
+    while n <= rounds:
+      hand_size = int(input("how many letters would you like in a hand? "))
+      print()
+      initial_hand = deal_hand(hand_size)
+      print("Current hand: ")
+      display_hand(initial_hand)
 
+      substitute = input("Do you want to substitute a letter? please enter the lette you want to replace or 'no' to proceed: ").lower()
+      if substitute == "no":
+        hand_playing = initial_hand
+      else:
+        hand_playing = substitute_hand(initial_hand,substitute)
+
+      print("Current hand: ")
+      display_hand(hand_playing)
+
+      game_score = play_hand(hand_playing,word_list,hand_size)
+      total_score += game_score
+      print("Total Score for this hand: ",total_score," points")
+      print("------------------------------------")
+      n += 1
+
+    print("Total score over all hands: ",total_score)
+
+    return 0
 #    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
 
+# experiment on "replay the hand" recursive functions
+def replay_hand(word_list,game_round):
+  if game_round == 1:
+    hand_size = int(input("how many letters would you like in a hand? "))
+    print()
+    initial_hand = deal_hand(hand_size)
+    print("Current hand: ")
+    display_hand(initial_hand)
 
+    substitute = input("Do you want to substitute a letter? please enter the lette you want to replace or 'no' to proceed: ").lower()
+    if substitute == "no":
+      hand_playing = initial_hand
+    else:
+      hand_playing = substitute_hand(initial_hand,substitute)
 
+    print("Current hand: ")
+    display_hand(hand_playing)
+
+    game_score = play_hand(hand_playing,word_list,hand_size)
+    return game_score
+  else:
+    total_score = 0
+    for n in range(game_round):
+      if n == 0:
+        hand_one_score = play_game(word_list,game_round=1)
+        print("Total score for this hand: ",hand_one_score,"\n-----------")
+        total_score += hand_one_score
+      else:
+        replay = input("Would you like to replay the same hand? y/n  ").lower()
+        if replay == "y":
+          play_hand(hand, word_list,n)
+  pass
 #
 # Build data structures used for entire session and play game
 # Do not remove the "if __name__ == '__main__':" line - this code is executed
@@ -495,3 +546,4 @@ def play_game(word_list):
 if __name__ == '__main__':
     word_list = load_words()
     play_game(word_list)
+
