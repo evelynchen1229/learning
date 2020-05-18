@@ -486,6 +486,7 @@ def play_game(word_list):
       print("Current hand: ")
       display_hand(initial_hand)
 
+    #try except usage in the middle of the code if I have a few of these sets
       substitute = input("Do you want to substitute a letter? please enter the lette you want to replace or 'no' to proceed: ").lower()
       if substitute == "no":
         hand_playing = initial_hand
@@ -497,9 +498,22 @@ def play_game(word_list):
 
       game_score = play_hand(hand_playing,word_list,hand_size)
       total_score += game_score
-      print("Total Score for this hand: ",total_score," points")
+      print("Total Score for this hand: ",game_score," points")
       print("------------------------------------")
       n += 1
+
+      if n > rounds:
+        break
+      else:
+        replay = input("Do you want to replay the hand? y/n ")
+        if replay == "y":
+          print("replay current hand: ")
+          display_hand(hand_playing)
+          game_score = play_hand(hand_playing, word_list, hand_size)
+          total_score += game_score
+          print("Total Score for this hand: ",game_score," points")
+          print("------------------------------------")
+          n += 1
 
     print("Total score over all hands: ",total_score)
 
