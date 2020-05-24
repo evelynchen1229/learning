@@ -37,6 +37,7 @@ def get_permutations(sequence):
             #print(per)
             str_len = 1+len(per)
             for n in range(0,str_len):
+                #insert first_char to all possible positions
                 if n ==0:
                     new_word=first_char+per
                 #    print(new_word)
