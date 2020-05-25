@@ -16,14 +16,14 @@ def load_words(file_name):
     Depending on the size of the word list, this function may
     take a while to finish.
     '''
-    print("Loading word list from file...")
+    #print("Loading word list from file...")
     # inFile: file
     inFile = open(file_name, 'r')
     # wordlist: list of strings
     wordlist = []
     for line in inFile:
         wordlist.extend([word.lower() for word in line.split(' ')])
-    print("  ", len(wordlist), "words loaded.")
+    #print("  ", len(wordlist), "words loaded.")
     return wordlist
 
 
@@ -71,7 +71,8 @@ class Message(object):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        self.message_text=text
+        self.valid_words=load_words(WORDLIST_FILENAME)
 
     def get_message_text(self):
         '''
@@ -79,7 +80,7 @@ class Message(object):
 
         Returns: self.message_text
         '''
-        pass #delete this line and replace with your code here
+        return self.message_text
 
     def get_valid_words(self):
         '''
@@ -88,7 +89,8 @@ class Message(object):
 
         Returns: a COPY of self.valid_words
         '''
-        pass #delete this line and replace with your code here
+        validword=self.valid_words
+        return validword.copy()
 
     def build_shift_dict(self, shift):
         '''
@@ -104,7 +106,32 @@ class Message(object):
         Returns: a dictionary mapping a letter (string) to
                  another letter (string).
         '''
-        pass #delete this line and replace with your code here
+        full_lowercase = string.ascii_lowercase
+        full_lowercase_list = list(full_lowercase)
+        full_uppercase=string.ascii_uppercase
+        full_uppercase_list=list(full_uppercase)
+
+        letter=self.get_message_text()
+        if letter in full_lowercase:
+            letter_position=full_lowercase_list.index(letter)
+            #shift up
+            #mapping_pos = (letter_position+shift)%26
+
+            #shift down
+            mapping_pos=(letter_position-shift)
+            mapping=full_lowercase_list[mapping_pos]
+        else:
+            letter_position=full_uppercase_list.index(letter)
+            #shift up
+            #mapping_pos = (letter_position+shift)%26
+
+            #shift down
+            mapping_pos=(letter_position-shift)
+            mapping=full_uppercase_list[mapping_pos]
+        mapping_letter=dict()
+        mapping_letter[self]=mapping
+        return mapping_letter
+
 
     def apply_shift(self, shift):
         '''
@@ -118,7 +145,22 @@ class Message(object):
         Returns: the message text (string) in which every character is shifted
              down the alphabet by the input shift
         '''
-        pass #delete this line and replace with your code here
+        message=self.get_message_text()
+        #print(message)
+        new_string_dict = dict()
+        for letter in message:
+        #    print(letter)
+            letter=Message(letter)
+            mapping_dict=letter.build_shift_dict(shift)
+            new_string_dict.update(mapping_dict)
+        new_string_list=list(new_string_dict.values())
+        new_string=''.join(new_string_list)
+        return new_string
+
+test=Message('text')
+test_m=test.get_message_text()
+change=test.apply_shift(2)
+print(change)
 
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
