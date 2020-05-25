@@ -112,6 +112,7 @@ class Message(object):
         full_uppercase_list=list(full_uppercase)
 
         letter=self.get_message_text()
+        print(letter)
         if letter in full_lowercase:
             letter_position=full_lowercase_list.index(letter)
             #shift up
@@ -157,13 +158,13 @@ class Message(object):
         new_string=''.join(new_string_list)
         return new_string
 
-test=Message('text')
-test_m=test.get_message_text()
-change=test.apply_shift(2)
-print(change)
+#test=Message('text')
+#test_m=test.get_message_text()
+#change=test.apply_shift(2)
+#print(change)
 
 class PlaintextMessage(Message):
-    def __init__(self, text, shift):
+    def __init__(self, text,shift):
         '''
         Initializes a PlaintextMessage object
 
@@ -178,7 +179,11 @@ class PlaintextMessage(Message):
             self.message_text_encrypted (string, created using shift)
 
         '''
-        pass #delete this line and replace with your code here
+        Message.__init__(self,text)
+        self.shift=shift
+        self.encryption_dict = self.build_shift_dict
+        self.message_text_encrypted=self.apply_shift(shift)
+
 
     def get_shift(self):
         '''
@@ -186,7 +191,7 @@ class PlaintextMessage(Message):
 
         Returns: self.shift
         '''
-        pass #delete this line and replace with your code here
+        return self.shift
 
     def get_encryption_dict(self):
         '''
@@ -194,7 +199,7 @@ class PlaintextMessage(Message):
 
         Returns: a COPY of self.encryption_dict
         '''
-        pass #delete this line and replace with your code here
+        return self.encryption_dict.copy
 
     def get_message_text_encrypted(self):
         '''
@@ -202,7 +207,7 @@ class PlaintextMessage(Message):
 
         Returns: self.message_text_encrypted
         '''
-        pass #delete this line and replace with your code here
+        return self.message_text_encrypted
 
     def change_shift(self, shift):
         '''
@@ -214,7 +219,15 @@ class PlaintextMessage(Message):
 
         Returns: nothing
         '''
-        pass #delete this line and replace with your code here
+        self.shift=shift
+        #return 0# self.shift
+
+
+test2=PlaintextMessage('text',2)
+print(type(test2))
+#shift_2=test2.change_shift(5)
+change2=test2.apply_shift(5)
+print(change2)
 
 
 class CiphertextMessage(Message):
