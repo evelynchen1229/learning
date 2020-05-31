@@ -60,6 +60,7 @@ def get_story_string():
 
 WORDLIST_FILENAME = 'words_ps4.txt'
 
+"""superclass Message - not supposed to be called directly"""
 class Message(object):
     def __init__(self, text):
         '''
@@ -89,8 +90,7 @@ class Message(object):
 
         Returns: a COPY of self.valid_words
         '''
-        validword=self.valid_words
-        return validword.copy()
+        return self.valid_words.copy()
 
     def build_shift_dict(self, shift):
         '''
@@ -112,7 +112,7 @@ class Message(object):
         full_uppercase_list=list(full_uppercase)
 
         letter=self.get_message_text()
-        print(letter)
+       # print(letter)
         if letter in full_lowercase:
             letter_position=full_lowercase_list.index(letter)
             #shift up
@@ -130,7 +130,8 @@ class Message(object):
             mapping_pos=(letter_position-shift)
             mapping=full_uppercase_list[mapping_pos]
         mapping_letter=dict()
-        mapping_letter[self]=mapping
+        mapping_letter[letter]=mapping
+       # print(mapping_letter)
         return mapping_letter
 
 
@@ -148,23 +149,25 @@ class Message(object):
         '''
         message=self.get_message_text()
         #print(message)
-        new_string_dict = dict()
+        new_string_list = []
         for letter in message:
         #    print(letter)
             letter=Message(letter)
             mapping_dict=letter.build_shift_dict(shift)
-            new_string_dict.update(mapping_dict)
-        new_string_list=list(new_string_dict.values())
+            for v in mapping_dict.values():
+                new_string_list.append(v)
+       # print(new_string_list)
         new_string=''.join(new_string_list)
         return new_string
 
 #test=Message('text')
-#test_m=test.get_message_text()
+##test_m=test.get_message_text()
 #change=test.apply_shift(2)
 #print(change)
 
+'''subclass PlaintextMessage'''
 class PlaintextMessage(Message):
-    def __init__(self, text,shift):
+    def __init__(self, text,shift=None):
         '''
         Initializes a PlaintextMessage object
 
@@ -181,8 +184,39 @@ class PlaintextMessage(Message):
         '''
         Message.__init__(self,text)
         self.shift=shift
-        self.encryption_dict = self.build_shift_dict
-        self.message_text_encrypted=self.apply_shift(shift)
+
+    def change_shift(self, shift):
+        '''
+        Changes self.shift of the PlaintextMessage and updates other
+        attributes determined by shift.
+
+        shift (integer): the new shift that should be associated with this message.
+        0 <= shift < 26
+
+        Returns: nothing
+        '''
+
+        self.shift=shift
+
+        #return 0# self.shift
+    def encryption_dict(self):
+        shift=self.shift
+        for t in text:
+            #print(t)
+            t=Message(t)
+            return t.build_shift_dict(shift) #don't need self seems like
+
+            '''if =self.build_shift_dict(shift), self would still be 'text' which
+            wouldn't be in the ascii list - not a letter'''
+
+            '''don't need self.encryption_dict = t.build_shift_dict(shift); plus
+            it didn't work with self.change_shift for some reason'''
+    def message_text_encrypted(self):
+        shift=self.shift
+        print(shift)
+        return self.apply_shift(shift)
+
+
 
 
     def get_shift(self):
@@ -199,7 +233,11 @@ class PlaintextMessage(Message):
 
         Returns: a COPY of self.encryption_dict
         '''
+        shift=self.get_shift
         return self.encryption_dict.copy
+        '''no need bracket in the end - return self.build_shift_dict.copy()
+        without() seems to return function type instead of calling a function'''
+
 
     def get_message_text_encrypted(self):
         '''
@@ -207,27 +245,32 @@ class PlaintextMessage(Message):
 
         Returns: self.message_text_encrypted
         '''
+        shift=self.get_shift
         return self.message_text_encrypted
 
-    def change_shift(self, shift):
-        '''
-        Changes self.shift of the PlaintextMessage and updates other
-        attributes determined by shift.
-
-        shift (integer): the new shift that should be associated with this message.
-        0 <= shift < 26
-
-        Returns: nothing
-        '''
-        self.shift=shift
-        #return 0# self.shift
 
 
-test2=PlaintextMessage('text',2)
-print(type(test2))
-#shift_2=test2.change_shift(5)
-change2=test2.apply_shift(5)
-print(change2)
+
+test2=PlaintextMessage('text',5)
+n = test2.message_text_encrypted()
+print(n)
+
+change=test2.change_shift(2)
+#print(test2.get_shift())
+#print(test2.shift)
+#print(type(test2))
+nn=test2.message_text_encrypted()
+
+print(nn)
+#print(type(test2))
+#shift_2=test2.change_shift(2)
+#shift = test2.get_shift() #shift updated to 2
+#print(shift)
+#change = test2.get_message_text_encrypted()
+#shift_change=test2.get_shift()
+#print(shift_change)
+#print(change)
+#
 
 
 class CiphertextMessage(Message):
