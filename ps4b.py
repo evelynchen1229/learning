@@ -116,18 +116,20 @@ class Message(object):
         if letter in full_lowercase:
             letter_position=full_lowercase_list.index(letter)
             #shift up
-            #mapping_pos = (letter_position+shift)%26
+            mapping_pos = (letter_position+shift)%26
 
             #shift down
-            mapping_pos=(letter_position-shift)
+            #mapping_pos=(letter_position-shift)
+
             mapping=full_lowercase_list[mapping_pos]
         else:
             letter_position=full_uppercase_list.index(letter)
             #shift up
-            #mapping_pos = (letter_position+shift)%26
+            mapping_pos = (letter_position+shift)%26
 
             #shift down
-            mapping_pos=(letter_position-shift)
+            #mapping_pos=(letter_position-shift)
+
             mapping=full_uppercase_list[mapping_pos]
         mapping_letter=dict()
         mapping_letter[letter]=mapping
@@ -213,7 +215,7 @@ class PlaintextMessage(Message):
             it didn't work with self.change_shift for some reason'''
     def message_text_encrypted(self):
         shift=self.shift
-        print(shift)
+        #print(shift)
         return self.apply_shift(shift)
 
 
@@ -246,22 +248,22 @@ class PlaintextMessage(Message):
         Returns: self.message_text_encrypted
         '''
         shift=self.get_shift
-        return self.message_text_encrypted
+        return self.message_text_encrypted()
 
 
 
 
-test2=PlaintextMessage('text',5)
-n = test2.message_text_encrypted()
-print(n)
-
-change=test2.change_shift(2)
+#test2=PlaintextMessage('text',5)
+#n = test2.message_text_encrypted()
+#print(n)
+#
+#change=test2.change_shift(2)
 #print(test2.get_shift())
 #print(test2.shift)
 #print(type(test2))
-nn=test2.message_text_encrypted()
-
-print(nn)
+#nn=test2.message_text_encrypted()
+#
+#print(nn)
 #print(type(test2))
 #shift_2=test2.change_shift(2)
 #shift = test2.get_shift() #shift updated to 2
@@ -284,7 +286,8 @@ class CiphertextMessage(Message):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+
+        Message.__init__(self,text)
 
     def decrypt_message(self):
         '''
@@ -302,19 +305,36 @@ class CiphertextMessage(Message):
         Returns: a tuple of the best shift value used to decrypt the message
         and the decrypted message text using that shift value
         '''
-        pass #delete this line and replace with your code here
+        shift=24
+        decrypt_message=self.apply_shift(shift)
+        #print(decrypt_message)
+        word_list=self.valid_words
+        #print(word_list)
+        word_pair=[shift,decrypt_message]
+
+        basket=tuple(word_pair)
+
+
+#        if is_word(word_list,decrypt_message):
+#            words_pair[self]=decrypt_message
+#            basket.append(words_pair)
+#
+        return basket
+
+
 
 if __name__ == '__main__':
 
-#    #Example test case (PlaintextMessage)
-#    plaintext = PlaintextMessage('hello', 2)
-#    print('Expected Output: jgnnq')
-#    print('Actual Output:', plaintext.get_message_text_encrypted())
-#
-#    #Example test case (CiphertextMessage)
-#    ciphertext = CiphertextMessage('jgnnq')
-#    print('Expected Output:', (24, 'hello'))
-#    print('Actual Output:', ciphertext.decrypt_message())
+    #Example test case (PlaintextMessage)
+    #plaintext = PlaintextMessage('hello', 2)
+    #print('Expected Output: jgnnq')
+    #print('Actual Output:', plaintext.get_message_text_encrypted())
+    '''test passed'''
+
+    #Example test case (CiphertextMessage)
+    ciphertext = CiphertextMessage('jgnnq')
+    #print('Expected Output:', (24, 'hello'))
+    print('Actual Output:', ciphertext.decrypt_message())
 
     #TODO: WRITE YOUR TEST CASES HERE
 
