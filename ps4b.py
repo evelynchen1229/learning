@@ -305,21 +305,28 @@ class CiphertextMessage(Message):
         Returns: a tuple of the best shift value used to decrypt the message
         and the decrypted message text using that shift value
         '''
-        shift=24
-        decrypt_message=self.apply_shift(shift)
+        shift = 0
+        de_message=self.apply_shift(shift)
         #print(decrypt_message)
         word_list=self.valid_words
         #print(word_list)
-        word_pair=[shift,decrypt_message]
+        validWord = is_word(word_list,de_message)
 
+        while validWord != True:
+            shift += 1
+            de_message=self.apply_shift(shift)
+            validWord = is_word(word_list,de_message)
+
+            if shift == 26:
+                break
+
+        word_pair=[shift,de_message]
         basket=tuple(word_pair)
-
-
-#        if is_word(word_list,decrypt_message):
+        return basket
 #            words_pair[self]=decrypt_message
 #            basket.append(words_pair)
 #
-        return basket
+
 
 
 
@@ -333,7 +340,7 @@ if __name__ == '__main__':
 
     #Example test case (CiphertextMessage)
     ciphertext = CiphertextMessage('jgnnq')
-    #print('Expected Output:', (24, 'hello'))
+    print('Expected Output:', (24, 'hello'))
     print('Actual Output:', ciphertext.decrypt_message())
 
     #TODO: WRITE YOUR TEST CASES HERE
